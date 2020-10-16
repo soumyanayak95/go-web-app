@@ -2,13 +2,18 @@ package main
 
 import (
     "fmt"
-    "net/http"
+	"net/http"
+	"github.com/gorilla/mux"
 )
 
 func main() {
-    http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-        fmt.Fprintf(w, "Hello, you've requested: %s\n", r.URL.Path)
+	r := mux.NewRouter()
+
+    r.HandleFunc("/{name}", func(w http.ResponseWriter, r *http.Request) {
+		vars := mux.Vars(r)
+		name := vars["name"]
+        fmt.Fprintf(w, "Hello %s\n", name)
     })
 
-    http.ListenAndServe(":80", nil)
+    http.ListenAndServe(":80", r)
 }
