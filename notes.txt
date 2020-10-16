@@ -1,0 +1,2 @@
+An http.ResponseWriter which is where you write your text/html response to.
+An http.Request which contains all information about this HTTP request including things like the URL or header fields.
