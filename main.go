@@ -1,19 +1,21 @@
 package main
 
 import (
-    "fmt"
-	"net/http"
-	"github.com/gorilla/mux"
+	// "fmt"
+	// "net/http"
+	"os"
+	"log"
+	"text/template"
 )
 
 func main() {
-	r := mux.NewRouter()
+	tpl, err := template.ParseFiles("tpl.gohtml")
+	if err != nil {
+		log.Fatalln(err)
+	}
 
-    r.HandleFunc("/{name}", func(w http.ResponseWriter, r *http.Request) {
-		vars := mux.Vars(r)
-		name := vars["name"]
-        fmt.Fprintf(w, "Hello %s\n", name)
-    })
-
-    http.ListenAndServe(":80", r)
+	err = tpl.Execute(os.Stdout, "soumya")
+	if err != nil {
+		log.Fatalln(err)
+	}
 }
