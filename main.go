@@ -1,21 +1,42 @@
 package main
 
 import (
-	// "fmt"
-	// "net/http"
-	"os"
+	"fmt"
+	"html/template"
 	"log"
-	"text/template"
+	"net/http"
+	"os/exec"
 )
 
-func main() {
-	tpl, err := template.ParseFiles("tpl.gohtml")
+type hotdog int
+
+func (m hotdog) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+	err := req.ParseForm()
 	if err != nil {
 		log.Fatalln(err)
 	}
+	tpl.ExecuteTemplate(w, "tpl.gohtml", req.Form)
+	if req.Form["fname"] != nil {
+		fmt.Println(req.Form["fname"][0])
+		clone(req.Form["fname"][0])
+	}
+}
 
-	err = tpl.Execute(os.Stdout, "soumya")
+var tpl *template.Template
+
+func init() {
+	tpl = template.Must(template.ParseFiles("tpl.gohtml"))
+}
+
+func main() {
+	var d hotdog
+	http.ListenAndServe(":8080", d)
+}
+
+func clone(repo string) {
+	cmd := exec.Command("git", "clone", repo)
+	err := cmd.Run()
 	if err != nil {
-		log.Fatalln(err)
+		fmt.Println("something went wrong")
 	}
 }
