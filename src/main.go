@@ -25,12 +25,12 @@ func (m hotdog) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 var tpl *template.Template
 
 func init() {
-	tpl = template.Must(template.ParseFiles("./views/tpl.gohtml"))
+	tpl = template.Must(template.ParseFiles("./src/views/tpl.gohtml"))
 }
 
 func main() {
 	var d hotdog
-	http.ListenAndServe(":8080", d)
+	http.ListenAndServe(":8000", d)
 }
 
 func clone(repo string) {
