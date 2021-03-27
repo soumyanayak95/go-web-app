@@ -1,4 +1,4 @@
-package ssh-into-server
+package scripts
 
 import (
 	"fmt"
